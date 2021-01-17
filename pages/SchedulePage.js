@@ -47,7 +47,7 @@ for(let s of weekschedule){
     }
     let {top,height}=getTagAttributes(s);
     let {color0,color100,fontColor}=tagColor[tag.title];
-    tag.style = `position:absolute;left:2px;width:96px;padding:0 6px;border-radius:5px;top:${top+80}px;height:${height}px;background: linear-gradient(315deg, ${color0} 0%, ${color100} 100%);color: ${fontColor};`;
+    tag.style = `position:absolute;left:2px;width:96px;padding:0 6px;border-radius:5px;top:${top}px;height:${height}px;background: linear-gradient(315deg, ${color0} 0%, ${color100} 100%);color: ${fontColor};`;
     days[s.weekday-1].tags.push(tag);
 }
 let options = {
@@ -67,7 +67,7 @@ let options = {
         "    </nut-fixednav>\n" +
         "</nut-drag>" +
         "    <div style='position:fixed;padding-left:5px;z-index:10;background: #ffffff;top:60px' id='times'>\n" +
-        "<div v-for='time in times' style='font-size: 12px;padding-bottom: 14px;'>" +
+        "<div v-for='time in times' style='font-size: 12px;height: 30px;'>" +
         "{{time}}" +
         "</div>" +
         "    </div>\n" +
@@ -77,7 +77,7 @@ let options = {
         "</div>" +
         "    </div>\n" +
         "    <div v-for='day in days' :style='day.dayStyle'>" +
-        "<div v-for='time in times' style='padding-bottom: 29px;border-top: 1px solid #f3f3f3'>" +
+        "<div v-for='time in times' style='height: 29px;border-top: 1px solid #f3f3f3'>" +
         "</div>" +
         "<nut-button v-for='tag in day.tags' :style='tag.style' @click='showScheduleTag(tag)'>" +
         "{{tag.title}}\n{{tag.from}}-{{tag.to}}\n@{{tag.at}}" +

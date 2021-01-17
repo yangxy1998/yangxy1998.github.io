@@ -30,10 +30,6 @@ var app = new Vue({
         }
     }
 });
-// if ('serviceWorker' in navigator) {
-//     navigator.serviceWorker.register('./sw.js').then(function () {
-//         console.log('Service Worker 注册成功');
-//     });
-// }
+
 
 

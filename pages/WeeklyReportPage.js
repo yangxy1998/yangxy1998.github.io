@@ -1,5 +1,16 @@
 let tasks = getLocalCache("weektasks") || [];
 let nextweek = getLocalCache("nextweektasks") || [];
+function getDate(){
+    let date = new Date();
+    let year = date.getFullYear();
+    let month = date.getMonth();
+    let day = date.getDate();
+    let weekday = date.getDay();
+    let hours = date.getHours();
+    let minutes = date.getMinutes();
+    let seconds = date.getSeconds();
+    return {year,month,day,weekday,hours,minutes,seconds};
+}
 function getSum()
 {
     let estimate = 0;
@@ -69,7 +80,7 @@ let options ={
         "  新增任务\n" +
         "</nut-button>" +
         "<nut-col  style='padding-top: 10px;padding-bottom: 10px;'>" +
-        "<nut-row type=\"flex\" flexWrap=\"wrap\" :gutter=\"5\" justify=\"center\" align=\"center\" v-for='(task,index) in tasks' :key='index'>" +
+        "<nut-row type=\"flex\" flexWrap=\"wrap\" :gutter=\"5\" justify=\"center\" align=\"center\" v-for='(task,index) in tasks'>" +
         "<nut-col style='padding-top: 10px;padding-bottom: 10px;border-top: 2px solid #f3f3f3'>" +
         "<nut-progress v-if='task.percentage!==100'\n" +
         "    :percentage.sync='task.percentage'\n" +
@@ -127,6 +138,7 @@ let options ={
         "    :min=\"0\" \n" +
         "></nut-stepper>" +
         "</nut-col>" +
+        "<nut-col align='center'>" +
         "<nut-button \n" +
         "  @click=\"addNextTask\"\n" +
         "  type=\"actived\" " +
@@ -134,26 +146,28 @@ let options ={
         ">\n" +
         "  新增任务\n" +
         "</nut-button>" +
+        "</nut-col>" +
         "<h3 style='padding-top: 10px;padding-bottom: 10px;'>本周未完成的任务</h3>" +
-        "<nut-col v-for='(task,index) in tasks'>" +
+        "<nut-col v-for='(task,index) in tasks' style='border-top:2px solid #eee;'>" +
         "<nut-row v-if='task.actual < task.estimate'>" +
         "<nut-col>" +
         "<p>任务内容：{{task.content}} </p><p>剩余工作量：{{task.estimate - task.actual}}</p> " +
         "</nut-col>" +
         "</nut-row>" +
         "</nut-col>" +
-        "<h3  style='padding-top: 10px;padding-bottom: 10px;'>下周的新任务</h3>" +
-        "<nut-col>" +
-        "    <nut-leftslip v-for=\"(task, index) in nextweek\" :key=\"index\" ref=\"leftslip\">\n" +
-        "        <div slot=\"slip-main\" class=\"slip-main\">\n" +
-        "            <div class=\"addr\">\n" +
+        "<h3 style='padding-top: 10px;padding-bottom: 10px;'>下周的新任务</h3>" +
+        "<nut-col  v-for=\"(task, index) in nextweek\">" +
+        "            <div>\n" +
         "                <p>任务内容：{{task.content}}</p>\n" +
         "                <p>预计工作量：{{task.estimate}}</p>\n" +
         "            </div>\n" +
+
+        "    <nut-leftslip ref=\"leftslip\" style='border-top:5px solid #eee;'>\n" +
+        "        <div slot=\"slip-main\" class=\"slip-main\">\n" +
         "        </div>\n" +
-        "        <div slot=\"slipbtns\" class=\"slipbtns\"\n" +
-        "            ><a href=\"javascript:;\" @click=\"delNextweek(index)\">删除</a></div\n" +
-        "        >\n" +
+        "        <div slot=\"slipbtns\" class=\"slipbtns\">" +
+        "<a href=\"javascript:;\" @click=\"delNextweek(index)\">删除</a>" +
+        "</div>\n" +
         "    </nut-leftslip>\n" +
         "</nut-col>" +
         "</nut-row>" +
@@ -162,29 +176,36 @@ let options ={
         "<nut-row type=\"flex\" flexWrap=\"wrap\" :gutter=\"10\" justify=\"center\" align=\"center\">" +
         "<nut-col>" +
         "<h2>周报</h2>" +
-        "<p>时间：2021.1.17</p>" +
+        "<p>时间：{{date.year}}-{{date.month+1}}-{{date.day}}</p>" +
         "<h3>本周小结</h3>" +
         "<p>本周原定计划工作量为{{sum.estimate}}，已完成的工作量{{sum.actual}}，完成的比例为{{sum.progress}}%。</p>" +
         "<p v-if='sum.progress===100'>本周任务全部完成，下周将开始{{nextweek.length}}个新任务。</p>" +
         "<p v-else>下周将继续进行本周仍未完成的任务，并完成{{nextweek.length}}个新任务。</p>" +
         "<h3>本周已完成的任务</h3>" +
-        "<div v-for='task in tasks'>" +
+        "<div v-for='(task,index) in tasks'>" +
         "<p v-if='task.estimate === task.actual'>{{task.content}}</p>" +
         "</div>" +
         "<h3>本周未完成的任务</h3>" +
-        "<div v-for='task in tasks'>" +
-        "<p v-if='task.estimate > task.actual'>{{task.content}}剩余工作量：{{task.estimate - task.actual}}</p>" +
+        "<div v-for='(task,index) in tasks'>" +
+        "<p v-if='task.estimate > task.actual'>{{task.content}} 剩余工作量：{{task.estimate - task.actual}}</p>" +
         "</div>" +
-        "<h3>下周任务</h3>" +
-        "<div v-for='task in nextweek'>" +
-        "<p>{{task.content}}预计工作量：{{task.estimate}}</p>" +
+        "<h3>下周要完成的新任务</h3>" +
+        "<div v-for='(task,index) in nextweek'>" +
+        "<p>{{task.content}} 预计工作量：{{task.estimate}}</p>" +
         "</div>" +
         "</nut-col>" +
+        "<nut-button \n" +
+        "  @click=\"changeToNextWeek\"\n" +
+        "  type=\"actived\" " +
+        "  icon=\"tick\" " +
+        "  align='center'" +
+        ">\n" +
+        "  朕已阅，开始下一周\n" +
+        "</nut-button>" +
         "</nut-row>" +
         "</nut-tab-panel>\n" +
         "</nut-tab>",
-    watch:{
-    },
+    watch:{},
     methods:{
         tabSwitch:function(index,event){
             console.log(index+'--'+event);
@@ -230,6 +251,15 @@ let options ={
             this.newTaskContent = "";
             this.$toast.success("下周任务添加成功！");
         },
+        changeToNextWeek(){
+            let next = this.nextweek;
+            for(let task of this.tasks){
+                if(task.estimate > task.actual)next.push(task);
+            }
+            setLocalCache("nextweektasks",[]);
+            setLocalCache("weektasks",next);
+            window.location.href = "/";
+        },
         changeLoad(index){
             this.tasks[index].actual = parseInt(this.tasks[index].actual);
             this.tasks[index].estimate = parseInt(this.tasks[index].estimate);
@@ -248,7 +278,8 @@ let options ={
             nextweek:nextweek,
             sum:getSum(),
             newTaskTime:0,
-            newTaskContent:""
+            newTaskContent:"",
+            date:getDate()
         }
     }
 };

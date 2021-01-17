@@ -1,9 +1,20 @@
-var cacheName = 'bs-0-2-0';
+var cacheName = 'bs-0-2-13';
 var cacheFiles = [
     '/',
     './index.html',
     './bundle.js',
-    './nutui.css'
+    './settings.js',
+    './jquery.min.js',
+    './nutui.css',
+    './manifest.json',
+    './img/book.png',
+    './svg/book.svg',
+    './svg/book-active.svg',
+    './svg/calendar.svg',
+    './svg/calendar-active.svg',
+    './svg/clipboard.svg',
+    './svg/clipboard-active.svg',
+    './svg/sun.svg',
 ];
 
 // 监听install事件，安装完成后，进行文件缓存

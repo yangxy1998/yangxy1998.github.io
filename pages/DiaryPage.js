@@ -31,7 +31,7 @@ let options = {
         "  icon=\"top\" " +
         "  style='padding: 10px'" +
         ">\n" +
-        "  提交日记\n" +
+        "  提交\n" +
         "</nut-button>" +
         "</nut-col>" +
         "<nut-col>" +

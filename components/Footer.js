@@ -1,4 +1,4 @@
-let tasks = getLocalCache("weektasks");
+let tasks = getLocalCache("weektasks") || [];
 let count = 0;
 for(let task of tasks){
     if(task.estimate > task.actual)count++;
